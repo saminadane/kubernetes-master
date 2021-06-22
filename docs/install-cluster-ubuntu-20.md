@@ -70,11 +70,34 @@ Update the below command with the ip address of kmaster
 ```
 kubeadm init --apiserver-advertise-address=172.16.16.100 --pod-network-cidr=192.168.0.0/16  --ignore-preflight-errors=all
 ```
-##### Deploy Calico network
+
+##### Deploying flannel manually
 ```
-kubectl --kubeconfig=/etc/kubernetes/admin.conf create -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
+kubectl --kubeconfig=/etc/kubernetes/admin.conf create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
 
+##### Deploying flannel manually if your using vagrant vm's
+```
+mkdir /home/vagrant/.kube
+cp /etc/kubernetes/admin.conf /home/vagrant/.kube/config
+chown -R vagrant:vagrant /home/vagrant/.kube
+wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+vi kube-flannel.yml
+***
+find flanneld
+containers:
+      - name: kube-flannel
+        image: quay.io/coreos/flannel:v0.14.0
+        command:
+        - /opt/bin/flanneld
+        args:
+        - --ip-masq
+        - --kube-subnet-mgr
+        - --inface=eth1  <====== insert this argument 
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "50Mi"
 ##### Cluster join command
 ```
 kubeadm token create --print-join-command
