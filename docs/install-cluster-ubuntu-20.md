@@ -85,6 +85,7 @@ wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-
 vi kube-flannel.yml
 ***
 find flanneld
+========================================================
 containers:
       - name: kube-flannel
         image: quay.io/coreos/flannel:v0.14.0
@@ -98,6 +99,8 @@ containers:
           requests:
             cpu: "100m"
             memory: "50Mi"
+=========================================================
+ kubectl apply -f kube-flannel.yml           
 ##### Cluster join command
 ```
 kubeadm token create --print-join-command
