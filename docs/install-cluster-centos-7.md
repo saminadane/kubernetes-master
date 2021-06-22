@@ -64,7 +64,7 @@ systemctl enable --now kubelet
 ## On kmaster
 ##### Initialize Kubernetes Cluster
 ```
-kubeadm init --apiserver-advertise-address=172.16.16.100 --pod-network-cidr=192.168.0.0/16
+kubeadm init --apiserver-advertise-address=172.16.16.100 --pod-network-cidr=10.244.0.0/16
 ```
 ##### Deploying flannel manually
 ```
@@ -79,6 +79,7 @@ wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-
 vi kube-flannel.yml
 ***
 find flanneld
+===================================================================
 containers:
       - name: kube-flannel
         image: quay.io/coreos/flannel:v0.14.0
@@ -92,6 +93,9 @@ containers:
           requests:
             cpu: "100m"
             memory: "50Mi"
+=====================================================================
+kubectl apply -f kube-flannel.yml
+
 ##### Cluster join command
 ```
 kubeadm token create --print-join-command
