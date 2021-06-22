@@ -101,6 +101,7 @@ containers:
             memory: "50Mi"
 =========================================================
  kubectl apply -f kube-flannel.yml           
+
 ##### Cluster join command
 ```
 kubeadm token create --print-join-command
